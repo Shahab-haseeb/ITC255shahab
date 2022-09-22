@@ -1,0 +1,74 @@
+############++++++ ITC 255/fall 2022++++++#########
+#descriptive method
+ #Univar case
+  #case
+  # Catagorical variables
+#upload the data
+
+##### We want to create the FDT Iris table 
+
+IrisData= read.csv(url("https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv"))
+names(IrisData)
+summary(IrisData$sepal_length)
+
+#First we create FDT of catagroical variable
+#Sepcies
+####FTD of species
+abFq=table(IrisData$species)
+abFq
+rlFq=round(prop.table(abFq),2)
+rlFq
+
+cumFq=cumsum(rlFq)
+cumFq
+
+SepciesFDT= cbind(abFq,rlFq,cumFq)
+SepciesFDT
+
+#We create a function
+fdtCatg= function(x){
+  abFq=table(x)
+  rlFq=round(prop.table(abFq),1)
+  cumFq=cumsum(rlFq)
+  FDT= cbind(abFq,rlFq,cumFq)
+  return(FDT)
+}
+
+#we test that function again on sepcies becuase we do not have another catgorical variable
+fdtCatg(IrisData$species)
+
+
+
+#### This part belongs to home work
+
+
+###numarical variable
+##lets define them in to the catagories
+#Catagories: small when sepal.lenght< 5, medium when sepal.lenght>=5 but less then 6, large otherwise
+
+#selection+loop
+cat_Sepal_length=c()
+
+for (k in 1:length(IrisData$sepal_length)) {
+  if (IrisData$sepal_length[k]<5){
+    cat_Sepal_length[k]= "small lenght"
+  } else if (IrisData$sepal_length[k]>=5 & IrisData$sepal_length[k]<6){
+    cat_Sepal_length[k]= "medium lenght"
+  } else {
+    cat_Sepal_length[k]= "larg lenght"
+  }
+}
+
+head(cat_Sepal_length)
+Sepal_langth= cbind(IrisData$sepal_length,cat_Sepal_length)
+View(Sepal_langth)
+
+## After we define them into the catagories we will use our function
+###FDT of Sepal length
+fdtCatg(cat_Sepal_length)
+
+
+
+
+
+
