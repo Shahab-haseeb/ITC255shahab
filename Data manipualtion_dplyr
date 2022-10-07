@@ -1,0 +1,68 @@
+####+++++++++#seaborn MPG+++++++##########
+####+ Data manipulation
+mpgdata=read.csv(url("https://raw.githubusercontent.com/mwaskom/seaborn-data/master/mpg.csv"))
+head(mpgdata)
+View(mpgdata)
+library(dplyr)
+str(mpgdata)
+ #filter
+customerUsa=filter(mpgdata,origin=="usa",name=="ford torino")
+head(customerUsa)
+
+###logical operators
+originC=filter(mpgdata,name=="usa" |  model_year=="70")
+head(origin)
+
+##origin and cylinders
+originCylinder=filter(mpgdata, (name=="usa" | model_year=="70") & cylinders=="8")
+head(originCylinder)
+originCylinder
+
+#we do not want cars that origin are from usa
+notUsa=filter(mpgdata, origin !="usa")
+head(notUsa)
+
+#we use %in% for cars that horse powe is beween 150 an 200
+unique(mpgdata$horsepower)
+spaceficHP=filter(mpgdata, horsepower %in% c(150,200))
+spaceficHP
+# for numircal data, I want know about cars that  mpg>10
+filter(mpgdata,mpg>10)
+
+### we work with arrange 
+# we want to arrange accleration of the cars
+names(mpgdata)
+head(arrange(mpgdata,desc(acceleration)))
+head(arrange(mpgdata,origin))
+
+####mainpulation
+ # select function
+#### i want to select acceleration,mpg an horse power
+select(mpgdata,c(acceleration,mpg,horsepower))
+### i wan to add cylinder first
+select(mpgdata,cylinders,everything())
+### i need to know about mpg,cylinder and dispalcement
+select(mpgdata, mpg:displacement)
+#### i do not want above colums
+select(mpgdata,-(mpg:displacement))
+
+########rename
+ ## mutate
+#This function does not make sense in this dataset but i would us it
+head(mutate(mpgdata,Total_sum=cylinders+mpg))
+
+####summary
+  # we want to find the mean of mpg and dispalcepents
+summarise(mpgdata,mean(mpg),mean(displacement))
+  #we want to goup cars by thier origin 
+originG=group_by(mpgdata,origin)
+summarise(originG,mean(mpg),sd(mpg))
+
+
+###pull
+# i need cars name
+carnames= pull(mpgdata,name)
+
+### Sample_n
+sampleMpg=sample_n(mpgdata,100)
+head(sampleMpg)
