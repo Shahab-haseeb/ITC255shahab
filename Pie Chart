@@ -1,0 +1,29 @@
+####++++++++++Pie Chart+++++########
+
+mpgdata=read.csv(url("https://raw.githubusercontent.com/mwaskom/seaborn-data/master/mpg.csv"))
+head(mpgdata)
+View(mpgdata)
+library(ggplot2)
+#####Pie chart of countries origin
+#originf
+
+fdtOrigin=table(mpgdata$origin)
+fdtOrigin=as.data.frame(fdtOrigin)
+fdtOrigin
+colnames(fdtOrigin)=c("origin","count")
+
+g0=ggplot(fdtOrigin, aes(x="", y=count, fill= origin))
+g1=g0+geom_col()+
+  coord_polar(theta = "y")+
+  theme_dark()+
+  theme(plot.title = element_text(colour = "green",
+                                  size = 16,
+                                  face = "bold",
+                                  hjust = .5))+
+  ggtitle('Origin Countries Distribution')+
+  geom_text(aes(label= count),
+            position = position_stack(vjust = .5))+
+  scale_fill_manual(values = c("yellow",'blue','red'))+
+  theme(legend.position = "left")
+ggsave('originDist.png')
+g1  
