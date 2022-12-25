@@ -1,0 +1,56 @@
+library("dplyr")
+library("ggplot2")
+library("plotly")
+
+y=as.data.frame(rnorm(2500,100,2))
+View(y)
+
+ggplot(data = y, aes(x = y$`rnorm(2500, 100, 2)`)) +
+  geom_histogram(fill='#00008B',colour=4)+
+  theme(panel.background = element_blank())+
+  labs(x = "Hourly Wage", y = "Freq")+
+  ggtitle("Hist. Distribution")+
+  theme(plot.title = element_text(colour = "#301934",
+                                  size = 13, 
+                                  face = "bold", 
+                                  hjust = .4))
+
+######
+
+
+#Set the prob
+p = 0.55
+#Generating values
+x = sample(c("female", "male"), size=2500, replace=TRUE, prob=c(p, 1-p))
+#Print the results
+xdf=as.data.frame(x)
+View(xdf)
+fdt=as.data.frame(table(x))
+View(fdt)
+ggplot(data = xdf, aes(x = "", y = xdf$x)) +
+  geom_col(aes(fill = xdf$x), stat = "identity") +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = c("#5C4033", "#AA336A"),
+                    labels = c("Male", "Female")) +
+  labs(title = "Gender", xlab = "",ylab="",) +
+  theme(legend.position = "right",
+        legend.title = element_blank(),
+        panel.background = element_blank())
+#### lm
+
+Y=y$`rnorm(2500, 100, 2)`
+X=xdf$x
+regress_analysis=lm(Y~X)
+summary(regress_analysis)
+#100.10174 -- -0.12559 coeff (male)
+#-b indirect
+#Y=100.1-0.13X
+#p-value: 0.1206 -- weak
+
+
+
+
+
+
+
+
